@@ -111,8 +111,9 @@
 
   function normalizeData(value) {
     const next = value && typeof value === "object" ? clone(value) : clone(defaultData);
+    const defaultPets = Array.isArray(defaultData.pets) ? clone(defaultData.pets) : [];
     next.heroes = Array.isArray(next.heroes) ? next.heroes : [];
-    next.pets = Array.isArray(next.pets) ? next.pets : [];
+    next.pets = Array.isArray(next.pets) && next.pets.length ? next.pets : defaultPets;
     next.defenseTeams = Array.isArray(next.defenseTeams) ? next.defenseTeams : [];
     next.defenseTeams.forEach((team) => {
       team.pet = team.pet || "";
@@ -586,6 +587,12 @@
       const button = document.createElement("button");
       button.className = `hero-card ${item.kind === "pet" ? "pet-card" : ""}`;
       button.type = "button";
+      if (item.kind === "pet") {
+        button.classList.toggle("is-legendary", item.rarity === "전설");
+        button.classList.toggle("is-rare", item.rarity === "희귀");
+        button.style.setProperty("--pet-card-color", item.colors?.[1] || "#d5a936");
+        button.style.setProperty("--pet-card-glow", item.colors?.[2] || "#fff1a8");
+      }
       button.classList.toggle("is-picked", item.kind === "pet" ? sidePet(state.activeSlot.side) === item.id : selectedTeam.includes(item.id));
       button.addEventListener("click", () => {
         if (item.kind === "pet") {
@@ -600,7 +607,7 @@
         ${petBadge()}
         <span class="hero-nameplate">
           <span class="hero-name">${item.name}</span>
-          <span class="hero-sub"><span>펫</span><span>★★★★★</span></span>
+          <span class="hero-sub"><span>펫</span><span>${item.rarity || "★★★★★"}</span></span>
         </span>
       `;
       } else {

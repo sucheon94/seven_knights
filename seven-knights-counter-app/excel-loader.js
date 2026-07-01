@@ -2,7 +2,11 @@
   const DEFENSE_SHEET = "방어팀";
   const COUNTER_SHEET = "공략덱";
   const PET_SHEET = "참조_펫";
-  const PET_COLORS = ["#2c2414", "#d5a936", "#fff1a8"];
+  const PET_COLOR_MAP = {
+    legendary: ["#3a2610", "#d5a936", "#fff1a8"],
+    rare: ["#1e2f45", "#3d83bd", "#a8d9ff"],
+    default: ["#2c2414", "#d5a936", "#fff1a8"]
+  };
   const FORMATION_MAP = new Map([
     ["기본", "basic"],
     ["기본진형", "basic"],
@@ -38,6 +42,16 @@
   function normalizeFormation(value) {
     const raw = trim(value);
     return FORMATION_MAP.get(raw) || FORMATION_MAP.get(normalize(raw)) || "basic";
+  }
+
+  function petColorsForRarity(rarity) {
+    if (trim(rarity) === "전설") {
+      return PET_COLOR_MAP.legendary;
+    }
+    if (trim(rarity) === "희귀") {
+      return PET_COLOR_MAP.rare;
+    }
+    return PET_COLOR_MAP.default;
   }
 
   function colToIndex(cellRef) {
@@ -168,7 +182,7 @@
     return { pets, map };
   }
 
-  function addPet(pets, petMap, name, id) {
+  function addPet(pets, petMap, name, id, rarity = "") {
     const petName = trim(name);
     if (!petName) {
       return "";
@@ -182,8 +196,9 @@
       id: petId,
       name: petName,
       role: "펫",
-      colors: PET_COLORS,
-      tags: ["펫"]
+      rarity: trim(rarity),
+      colors: petColorsForRarity(rarity),
+      tags: ["펫", trim(rarity)].filter(Boolean)
     };
     pets.push(pet);
     petMap.set(normalize(pet.id), pet.id);
@@ -200,7 +215,7 @@
       }
       const name = value(row, headers, "펫명") || value(row, headers, "펫");
       const id = value(row, headers, "펫ID");
-      addPet(pets, map, name, id || petIdFromName(name, index));
+      addPet(pets, map, name, id || petIdFromName(name, index), value(row, headers, "비고"));
     });
     return { pets, petMap: map };
   }

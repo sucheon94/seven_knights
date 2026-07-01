@@ -142,6 +142,43 @@
     ["asura", "아수라", "universal"]
   ];
 
+  const petColors = {
+    legendary: ["#3a2610", "#d5a936", "#fff1a8"],
+    rare: ["#1e2f45", "#3d83bd", "#a8d9ff"]
+  };
+
+  const petRows = [
+    ["p01", "제오", "전설"],
+    ["p02", "제브", "전설"],
+    ["p03", "요랑", "전설"],
+    ["p04", "카람", "전설"],
+    ["p05", "유", "전설"],
+    ["p06", "델로", "전설"],
+    ["p07", "리첼", "전설"],
+    ["p08", "멜패로", "전설"],
+    ["p09", "파이크", "전설"],
+    ["p10", "루", "전설"],
+    ["p11", "연지", "전설"],
+    ["p12", "이린", "전설"],
+    ["p13", "크리", "전설"],
+    ["p14", "윈디", "전설"],
+    ["p15", "에리", "전설"],
+    ["p16", "더지", "전설"],
+    ["p17", "믹", "전설"],
+    ["p18", "크로아", "희귀"],
+    ["p19", "파라곤", "희귀"],
+    ["p20", "노트", "희귀"],
+    ["p21", "세리", "희귀"],
+    ["p22", "니키", "희귀"],
+    ["p23", "니나", "희귀"],
+    ["p24", "풍소협", "희귀"],
+    ["p25", "뮤뮤", "희귀"],
+    ["p26", "이그리트", "희귀"],
+    ["p27", "미믹", "희귀"],
+    ["p28", "두", "희귀"],
+    ["p29", "헬레핀", "희귀"]
+  ];
+
   function makeHero([id, name, type]) {
     const meta = typeMeta[type];
     return {
@@ -156,10 +193,21 @@
     };
   }
 
+  function makePet([id, name, rarity]) {
+    return {
+      id,
+      name,
+      role: "펫",
+      rarity,
+      colors: rarity === "희귀" ? petColors.rare : petColors.legendary,
+      tags: ["펫", rarity]
+    };
+  }
+
   window.SK_COUNTER_TYPE_META = typeMeta;
   window.SK_COUNTER_DEFAULT_DATA = {
     heroes: heroRows.map(makeHero),
-    pets: [],
+    pets: petRows.map(makePet),
     defenseTeams: [
       {
         id: "julie-clemys-rachel",
