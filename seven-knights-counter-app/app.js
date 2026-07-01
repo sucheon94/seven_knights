@@ -496,7 +496,6 @@
       button.innerHTML = `
         <span class="counter-title-row">
           <strong>${counter.name}</strong>
-          <span class="counter-rate">${counter.confidence}</span>
         </span>
         <span class="mini-team">${counter.offense.map((id) => `<span class="mini-token">${heroName(id)}</span>`).join("")}</span>
         <p class="counter-note">${counter.exact ? counter.sourceTeam.name : `${counter.sourceTeam.name} 유사 매칭`}</p>

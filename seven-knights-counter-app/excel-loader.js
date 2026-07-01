@@ -240,7 +240,6 @@
         offense: ids,
         offenseSlots: buildSlots(ids, positions),
         formationKey,
-        confidence: value(row, headers, "신뢰도") || "보통",
         formation: positionSummary ? `${formationName} ${positionSummary}번 배치` : formationName,
         skillOrder: splitLines(value(row, headers, "스킬순서")),
         rings: parseRings(value(row, headers, "반지")),

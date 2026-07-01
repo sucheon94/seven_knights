@@ -169,7 +169,6 @@
             id: "pi-gelidus-teo",
             name: "파이 속공 붕괴",
             offense: ["pi", "gelidus", "teo"],
-            confidence: "높음",
             formation: "파이 후열, 겔리두스와 태오 전열 압박",
             skillOrder: ["파이 2스킬", "겔리두스 1스킬", "태오 각성기", "파이 1스킬", "겔리두스 2스킬"],
             rings: [
@@ -183,7 +182,6 @@
             id: "rosie-pi-clemys",
             name: "로지 침묵 진입",
             offense: ["rosie", "pi", "clemys"],
-            confidence: "보통",
             formation: "로지 선턴, 파이 마무리, 클레미스 보조",
             skillOrder: ["로지 1스킬", "클레미스 2스킬", "파이 2스킬", "로지 각성기"],
             rings: [
@@ -204,7 +202,6 @@
             id: "rachel-clemys-milia",
             name: "레이첼 약화 운영",
             offense: ["rachel", "clemys", "milia"],
-            confidence: "높음",
             formation: "레이첼 후열, 클레미스와 밀리아 전열 유지",
             skillOrder: ["클레미스 2스킬", "레이첼 1스킬", "밀리아 2스킬", "레이첼 각성기", "밀리아 1스킬"],
             rings: [
@@ -218,7 +215,6 @@
             id: "eileen-gelidus-pi",
             name: "아일린 전열 버티기",
             offense: ["eileen", "gelidus", "pi"],
-            confidence: "보통",
             formation: "아일린 전열, 겔리두스 광역, 파이 후열",
             skillOrder: ["아일린 2스킬", "겔리두스 2스킬", "파이 2스킬", "겔리두스 1스킬"],
             rings: [
@@ -239,7 +235,6 @@
             id: "teo-kyle-clemys",
             name: "태오 카일 연타",
             offense: ["teo", "kyle", "clemys"],
-            confidence: "높음",
             formation: "태오 후열, 카일 추격, 클레미스 보조",
             skillOrder: ["클레미스 2스킬", "태오 1스킬", "카일 2스킬", "태오 각성기", "카일 1스킬"],
             rings: [

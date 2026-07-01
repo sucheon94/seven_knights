@@ -127,6 +127,18 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.maker-credit {
+  display: inline-block;
+  margin-left: 8px;
+  color: rgba(255, 239, 186, 0.82);
+  font-size: 0.5em;
+  font-weight: 800;
+  line-height: 1;
+  text-shadow: 0 1px 0 #000;
+  white-space: nowrap;
+  vertical-align: baseline;
+}
+
 h2 {
   margin-bottom: 0;
   font-size: 1.12rem;
@@ -803,13 +815,6 @@ h2 {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.96rem;
-}
-
-.counter-rate {
-  flex: 0 0 auto;
-  color: var(--green);
-  font-size: 0.78rem;
-  font-weight: 1000;
 }
 
 .mini-team {
