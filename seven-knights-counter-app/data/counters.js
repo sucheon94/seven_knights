@@ -159,6 +159,7 @@
   window.SK_COUNTER_TYPE_META = typeMeta;
   window.SK_COUNTER_DEFAULT_DATA = {
     heroes: heroRows.map(makeHero),
+    pets: [],
     defenseTeams: [
       {
         id: "julie-clemys-rachel",

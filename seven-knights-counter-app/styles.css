@@ -502,6 +502,38 @@ h2 {
   box-shadow: 0 0 0 2px rgba(244, 199, 111, 0.22), 0 0 24px rgba(244, 199, 111, 0.2);
 }
 
+.pet-slot {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 68px;
+  height: 72px;
+  display: grid;
+  grid-template-rows: 14px 36px 14px;
+  align-items: center;
+  justify-items: center;
+  gap: 2px;
+  padding: 5px;
+  border: 1px solid rgba(255, 233, 170, 0.42);
+  border-radius: var(--radius);
+  color: var(--text);
+  background:
+    linear-gradient(145deg, rgba(213, 169, 54, 0.18), rgba(255, 255, 255, 0.03)),
+    rgba(255, 255, 255, 0.07);
+  text-align: center;
+}
+
+.pet-slot.is-active {
+  border-color: var(--gold-2);
+  box-shadow: 0 0 0 2px rgba(244, 199, 111, 0.22), 0 0 24px rgba(244, 199, 111, 0.2);
+}
+
+.pet-slot-label {
+  color: var(--gold-2);
+  font-size: 0.58rem;
+  font-weight: 1000;
+}
+
 .slot-index {
   position: absolute;
   top: 3px;
@@ -577,6 +609,12 @@ h2 {
   width: 30px;
   height: 28px;
   font-size: 0.82rem;
+}
+
+.pet-mini-portrait {
+  width: 36px;
+  height: 36px;
+  font-size: 0.9rem;
 }
 
 .preset-button {
@@ -681,6 +719,17 @@ h2 {
   background: linear-gradient(#ffeab4, #e4b95e);
 }
 
+.filter-button.is-pet {
+  border-color: rgba(255, 233, 170, 0.72);
+  color: #15140e;
+  background: linear-gradient(#ffeebf, #d5a936);
+}
+
+.filter-button.is-pet:not(.is-active) {
+  color: #fff8e8;
+  background: rgba(213, 169, 54, 0.2);
+}
+
 .hero-rail {
   display: grid;
   grid-auto-flow: column;
@@ -709,6 +758,10 @@ h2 {
   border-color: var(--gold);
 }
 
+.pet-card {
+  border-color: rgba(255, 233, 170, 0.5);
+}
+
 .hero-portrait {
   height: 94px;
   display: grid;
@@ -733,6 +786,11 @@ h2 {
 .hero-portrait span {
   position: relative;
   z-index: 1;
+}
+
+.pet-portrait::before {
+  border-radius: 50%;
+  border-color: rgba(255, 233, 170, 0.34);
 }
 
 .hero-element {
@@ -781,6 +839,11 @@ h2 {
   height: 17px;
   border-radius: 3px;
   font-size: 0.48rem;
+}
+
+.pet-badge {
+  color: #18140a;
+  text-shadow: none;
 }
 
 .hero-nameplate {
@@ -865,6 +928,13 @@ h2 {
 .summary-chip.is-filled {
   color: var(--text);
   border-color: rgba(244, 199, 111, 0.42);
+}
+
+.summary-chip.is-pet,
+.mini-token.is-pet {
+  border-color: rgba(255, 233, 170, 0.62);
+  color: var(--gold-2);
+  background: rgba(213, 169, 54, 0.14);
 }
 
 .counter-list {

@@ -1,6 +1,8 @@
 (function () {
   const DEFENSE_SHEET = "방어팀";
   const COUNTER_SHEET = "공략덱";
+  const PET_SHEET = "참조_펫";
+  const PET_COLORS = ["#2c2414", "#d5a936", "#fff1a8"];
   const FORMATION_MAP = new Map([
     ["기본", "basic"],
     ["기본진형", "basic"],
@@ -151,8 +153,65 @@
     return map;
   }
 
+  function petIdFromName(name, index) {
+    const normalized = normalize(name);
+    return normalized ? `pet-${normalized}` : `pet-${index + 1}`;
+  }
+
+  function buildPetMap(defaultData) {
+    const pets = clone(defaultData.pets || []);
+    const map = new Map();
+    pets.forEach((pet) => {
+      map.set(normalize(pet.name), pet.id);
+      map.set(normalize(pet.id), pet.id);
+    });
+    return { pets, map };
+  }
+
+  function addPet(pets, petMap, name, id) {
+    const petName = trim(name);
+    if (!petName) {
+      return "";
+    }
+    const existing = petMap.get(normalize(id)) || petMap.get(normalize(petName));
+    if (existing) {
+      return existing;
+    }
+    const petId = trim(id) || petIdFromName(petName, pets.length);
+    const pet = {
+      id: petId,
+      name: petName,
+      role: "펫",
+      colors: PET_COLORS,
+      tags: ["펫"]
+    };
+    pets.push(pet);
+    petMap.set(normalize(pet.id), pet.id);
+    petMap.set(normalize(pet.name), pet.id);
+    return pet.id;
+  }
+
+  function parsePets(rows, defaultData) {
+    const { pets, map } = buildPetMap(defaultData);
+    const headers = headerMap(rows);
+    rows.slice(1).forEach((row, index) => {
+      if (!activeRow(value(row, headers, "사용여부") || "Y")) {
+        return;
+      }
+      const name = value(row, headers, "펫명") || value(row, headers, "펫");
+      const id = value(row, headers, "펫ID");
+      addPet(pets, map, name, id || petIdFromName(name, index));
+    });
+    return { pets, petMap: map };
+  }
+
   function heroId(heroMap, name) {
     return heroMap.get(normalize(name)) || "";
+  }
+
+  function petId(petMap, pets, name) {
+    const found = petMap.get(normalize(name));
+    return found || addPet(pets, petMap, name, "");
   }
 
   function buildSlots(ids, positions) {
@@ -187,7 +246,7 @@
     });
   }
 
-  function parseDefenseTeams(rows, heroMap) {
+  function parseDefenseTeams(rows, heroMap, petMap, pets) {
     const headers = headerMap(rows);
     const teams = new Map();
 
@@ -202,12 +261,14 @@
         return;
       }
       const positions = ["방어1위치", "방어2위치", "방어3위치"].map((name) => value(row, headers, name));
+      const pet = petId(petMap, pets, value(row, headers, "펫"));
       teams.set(id, {
         id,
         name: value(row, headers, "방어팀명") || names.filter(Boolean).join(" / "),
         formationKey: normalizeFormation(value(row, headers, "방어진형")),
         defense: ids,
         defenseSlots: buildSlots(ids, positions),
+        pet,
         note: value(row, headers, "비고"),
         counters: []
       });
@@ -216,7 +277,7 @@
     return teams;
   }
 
-  function parseCounters(rows, heroMap, teams) {
+  function parseCounters(rows, heroMap, petMap, pets, teams) {
     const headers = headerMap(rows);
     rows.slice(1).forEach((row, index) => {
       const defenseId = value(row, headers, "방어팀ID");
@@ -234,11 +295,13 @@
       const formationKey = normalizeFormation(value(row, headers, "공략진형"));
       const formationName = value(row, headers, "공략진형") || "기본 진형";
       const positionSummary = positions.filter(Boolean).join(", ");
+      const pet = petId(petMap, pets, value(row, headers, "펫"));
       team.counters.push({
         id: value(row, headers, "공략덱ID") || `${defenseId}-counter-${index + 1}`,
         name: value(row, headers, "공략덱명") || names.filter(Boolean).join(" / "),
         offense: ids,
         offenseSlots: buildSlots(ids, positions),
+        pet,
         formationKey,
         formation: positionSummary ? `${formationName} ${positionSummary}번 배치` : formationName,
         skillOrder: splitLines(value(row, headers, "스킬순서")),
@@ -258,15 +321,18 @@
     const sheetPaths = await loadSheetPaths(zip);
     const defensePath = sheetPaths.get(DEFENSE_SHEET);
     const counterPath = sheetPaths.get(COUNTER_SHEET);
+    const petPath = sheetPaths.get(PET_SHEET);
     if (!defensePath || !counterPath) {
       throw new Error("엑셀에 방어팀/공략덱 시트가 필요합니다.");
     }
 
     const heroMap = buildHeroMap(defaultData);
+    const petRows = petPath ? await readSheetRows(zip, petPath, sharedStrings) : [];
+    const { pets, petMap } = parsePets(petRows, defaultData);
     const defenseRows = await readSheetRows(zip, defensePath, sharedStrings);
     const counterRows = await readSheetRows(zip, counterPath, sharedStrings);
-    const teams = parseDefenseTeams(defenseRows, heroMap);
-    parseCounters(counterRows, heroMap, teams);
+    const teams = parseDefenseTeams(defenseRows, heroMap, petMap, pets);
+    parseCounters(counterRows, heroMap, petMap, pets, teams);
 
     const defenseTeams = Array.from(teams.values()).filter((team) => team.counters.length);
     if (!defenseTeams.length) {
@@ -275,6 +341,7 @@
 
     return {
       heroes: clone(defaultData.heroes),
+      pets,
       defenseTeams
     };
   }
