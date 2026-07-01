@@ -9,6 +9,16 @@
   </head>
   <body>
     <div class="app-shell">
+      <div class="app-layout">
+        <aside class="category-sidebar" aria-label="카테고리">
+          <p class="category-title">카테고리</p>
+          <nav class="category-list">
+            <button class="category-button is-active" type="button" data-page="counter" aria-current="page">길드전 카운터 노트</button>
+            <button class="category-button" type="button" data-page="gear">길드전 템셋팅</button>
+          </nav>
+        </aside>
+
+        <div class="app-content">
       <header class="topbar">
         <div class="brand-lockup">
           <div class="brand-mark" aria-hidden="true"></div>
@@ -34,7 +44,7 @@
         </div>
       </header>
 
-      <main class="workspace">
+      <main class="workspace page-section is-active" data-page-panel="counter">
         <section class="battle-board" aria-label="팀 배치">
           <div class="battle-tabs" role="tablist" aria-label="팀 선택">
             <button class="tab-button is-active" id="defenseMode" type="button">방어팀</button>
@@ -100,6 +110,14 @@
           <article class="deck-detail" id="deckDetail"></article>
         </aside>
       </main>
+
+          <main class="construction-page page-section" data-page-panel="gear" hidden>
+            <div class="construction-message">
+              <h2>공사 중</h2>
+            </div>
+          </main>
+        </div>
+      </div>
     </div>
 
     <input id="dataFileInput" type="file" accept="application/json" hidden />

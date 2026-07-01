@@ -69,6 +69,9 @@
   };
 
   const els = {
+    categoryButtons: Array.from(document.querySelectorAll(".category-button")),
+    pagePanels: Array.from(document.querySelectorAll("[data-page-panel]")),
+    topActions: document.querySelector(".top-actions"),
     attackMode: document.getElementById("attackMode"),
     defenseMode: document.getElementById("defenseMode"),
     formationSideLabel: document.getElementById("formationSideLabel"),
@@ -113,6 +116,26 @@
 
   function saveData() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function setCategory(page) {
+    els.categoryButtons.forEach((button) => {
+      const isActive = button.dataset.page === page;
+      button.classList.toggle("is-active", isActive);
+      if (isActive) {
+        button.setAttribute("aria-current", "page");
+      } else {
+        button.removeAttribute("aria-current");
+      }
+    });
+    els.pagePanels.forEach((panel) => {
+      const isActive = panel.dataset.pagePanel === page;
+      panel.hidden = !isActive;
+      panel.classList.toggle("is-active", isActive);
+    });
+    if (els.topActions) {
+      els.topActions.hidden = page !== "counter";
+    }
   }
 
   function setExcelStatus(message, status = "") {
@@ -620,6 +643,9 @@
     }
   }
 
+  els.categoryButtons.forEach((button) => {
+    button.addEventListener("click", () => setCategory(button.dataset.page));
+  });
   els.attackMode.addEventListener("click", () => setMode("attack"));
   els.defenseMode.addEventListener("click", () => setMode("defense"));
   els.clearAttack.addEventListener("click", () => clearTeam("attack"));
@@ -656,6 +682,7 @@
     event.target.value = "";
   });
 
+  setCategory("counter");
   render();
   loadExcelFromUrl();
 })();
