@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>세븐나이츠 리버스 길드전 카운터 노트</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div>
+            <p class="eyebrow">Seven Knights Re:BIRTH</p>
+            <h1>길드전 카운터 노트</h1>
+          </div>
+        </div>
+
+        <div class="top-actions" aria-label="데이터 관리">
+          <button class="round-button" id="importExcel" type="button" title="엑셀 가져오기" aria-label="엑셀 가져오기">
+            <span aria-hidden="true">XL</span>
+          </button>
+          <button class="round-button" id="importData" type="button" title="JSON 가져오기" aria-label="JSON 가져오기">
+            <span aria-hidden="true">↥</span>
+          </button>
+          <button class="round-button" id="exportData" type="button" title="JSON 내보내기" aria-label="JSON 내보내기">
+            <span aria-hidden="true">↧</span>
+          </button>
+          <button class="round-button" id="resetData" type="button" title="기본 데이터 복원" aria-label="기본 데이터 복원">
+            <span aria-hidden="true">↺</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="battle-board" aria-label="팀 배치">
+          <div class="battle-tabs" role="tablist" aria-label="팀 선택">
+            <button class="tab-button is-active" id="defenseMode" type="button">방어팀</button>
+            <button class="tab-button" id="attackMode" type="button">공략덱</button>
+          </div>
+
+          <div class="formation-toolbar" aria-label="진형 선택">
+            <div class="formation-toolbar-title">
+              <span class="side-kicker" id="formationSideLabel">방어팀 진형</span>
+              <strong id="currentFormationLabel">기본 진형</strong>
+              <span class="excel-status" id="excelStatus">엑셀 데이터 확인 중</span>
+            </div>
+            <div class="formation-options" id="formationOptions"></div>
+          </div>
+
+          <div class="arena">
+            <div class="team-panel attack-panel">
+              <div class="panel-heading">
+                <span class="side-kicker">My Team</span>
+                <h2>내 공략덱</h2>
+              </div>
+              <div class="formation formation-attack" id="attackSlots"></div>
+              <button class="preset-button" id="clearAttack" type="button">공략덱 비우기</button>
+            </div>
+
+            <div class="versus">
+              <div class="versus-flare" aria-hidden="true"></div>
+              <strong>VS</strong>
+            </div>
+
+            <div class="team-panel defense-panel">
+              <div class="panel-heading">
+                <span class="side-kicker">Enemy Defense</span>
+                <h2>상대 방어팀</h2>
+              </div>
+              <div class="formation formation-defense" id="defenseSlots"></div>
+              <button class="preset-button" id="clearDefense" type="button">방어팀 비우기</button>
+            </div>
+          </div>
+
+          <div class="roster-toolbar">
+            <div class="search-box">
+              <span aria-hidden="true">⌕</span>
+              <input id="heroSearch" type="search" autocomplete="off" placeholder="영웅 검색" />
+            </div>
+            <div class="role-filters" id="roleFilters" aria-label="역할 필터"></div>
+          </div>
+
+          <div class="hero-rail" id="heroRail" aria-label="영웅 목록"></div>
+        </section>
+
+        <aside class="counter-panel" aria-label="공략 정보">
+          <div class="counter-header">
+            <div>
+              <p class="eyebrow">Counter Decks</p>
+              <h2>공략덱 목록</h2>
+            </div>
+            <span class="match-badge" id="matchBadge">0개</span>
+          </div>
+
+          <div class="defense-summary" id="defenseSummary"></div>
+          <div class="counter-list" id="counterList"></div>
+          <article class="deck-detail" id="deckDetail"></article>
+        </aside>
+      </main>
+    </div>
+
+    <input id="dataFileInput" type="file" accept="application/json" hidden />
+    <input id="excelFileInput" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" hidden />
+    <script src="./data/counters.js"></script>
+    <script src="./vendor/jszip.min.js"></script>
+    <script src="./excel-loader.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
